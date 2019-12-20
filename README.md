@@ -9,7 +9,7 @@
   </p>
 </div>
 
-Python-lambda is a toolset for developing and deploying *serverless* Python code in AWS Lambda.
+Python-lambda2 is an extension to the [Python-lambda](https://github.com/nficano/python-lambda) package which is a toolset for developing and deploying *serverless* Python code in AWS Lambda.
 
 # Description
 
