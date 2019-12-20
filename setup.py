@@ -23,13 +23,14 @@ test_requirements = [
 ]
 
 setup(
-    name='python-lambda',
+    name='python-lambda2',
     version='3.3.0',
     description='The bare minimum for a Python app running on Amazon Lambda.',
     long_description=readme,
-    author='Nick Ficano',
-    author_email='nficano@gmail.com',
-    url='https://github.com/nficano/python-lambda',
+    long_description_content_type='text/x-rst',
+    author='Wassim Salib',
+    author_email='wassim87@gmail.com',
+    url='https://github.com/wassimsalib/python-lambda2',
     packages=find_packages(),
     package_data={
         'aws_lambda': ['project_templates/*'],
@@ -40,7 +41,7 @@ setup(
     install_requires=requirements,
     license='ISCL',
     zip_safe=False,
-    keywords='python-lambda',
+    keywords='python-lambda2',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',

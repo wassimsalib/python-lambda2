@@ -23,7 +23,7 @@ clean-merge:
 	find . -name '*.orig' -exec rm -f {} +
 
 lint:
-	flake8 python-lambda tests
+	flake8 python-lambda2 tests
 
 release: clean
 	python setup.py sdist upload

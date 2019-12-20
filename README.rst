@@ -1,20 +1,16 @@
-========
+=========
 python-λ
-========
+=========
 
 .. image:: https://img.shields.io/pypi/v/python-lambda.svg
   :alt: Pypi
-  :target: https://pypi.python.org/pypi/python-lambda/
+  :target: https://pypi.python.org/pypi/python-lambda2/
 
 .. image:: https://img.shields.io/pypi/pyversions/python-lambda.svg
   :alt: Python Versions
-  :target: https://pypi.python.org/pypi/python-lambda/
+  :target: https://pypi.python.org/pypi/python-lambda2/
 
 Python-lambda is a toolset for developing and deploying *serverless* Python code in AWS Lambda.
-
-A call for contributors
-=======================
-With python-lambda and `pytube <https://github.com/nficano/pytube/>`_ both continuing to gain momentum, I'm calling for contributors to help build out new features, review pull requests, fix bugs, and maintain overall code quality. If you're interested, please email me at nficano[at]gmail.com.
 
 Description
 ===========
@@ -23,7 +19,7 @@ AWS Lambda is a service that allows you to write Python, Java, or Node.js code t
 
 Working with Lambda is relatively easy, but the process of bundling and deploying your code is not as simple as it could be.
 
-The *Python-Lambda* library takes away the guess work of developing your Python-Lambda services by providing you a toolset to streamline the annoying parts.
+The *Python-Lambda2* library takes away the guess work of developing your Python-Lambda services by providing you a toolset to streamline the annoying parts.
 
 Requirements
 ============
@@ -49,7 +45,7 @@ Next, download *Python-Lambda* using pip via pypi.
 
 .. code:: bash
 
-    (pylambda) $ pip install python-lambda
+    (pylambda) $ pip install python-lambda2
 
 From your ``pylambda`` directory, run the following to bootstrap your project.
 
@@ -179,13 +175,13 @@ Before doing this, you will need to set the following variables in ``config.yaml
 Your role must have ``s3:PutObject`` permission on the bucket/key that you specify for the upload to work properly. Once you have that set, you can execute ``lambda upload`` to initiate the transfer.
 
 Deploying via S3
-===============
+=================
 You can also choose to use S3 as your source for Lambda deployments.  This can be done by issuing ``lambda deploy_s3`` with the same variables/AWS permissions you'd set for executing the ``upload`` command.
 
 Development
 ===========
 
-Development of "python-lambda" is facilitated exclusively on GitHub. Contributions in the form of patches, tests and feature creation and/or requests are very welcome and highly encouraged. Please open an issue if this tool does not function as you'd expect.
+Development of "python-lambda2" is facilitated exclusively on GitHub. Contributions in the form of patches, tests and feature creation and/or requests are very welcome and highly encouraged. Please open an issue if this tool does not function as you'd expect.
 
 
 How to release updates
