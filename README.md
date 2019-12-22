@@ -9,7 +9,11 @@
   </p>
 </div>
 
-Python-lambda2 is an extension to the [Python-lambda](https://github.com/nficano/python-lambda) package which is a toolset for developing and deploying *serverless* Python code in AWS Lambda.
+This is an interim fork of the excellent project that can be found here: [Python-lambda](https://github.com/nficano/python-lambda)
+
+Unfortunately it seems like development has been stuck for some time and no activity has been seen from the author, to that end this project is a drop-in replacement that merges in some of the more important fixes.
+
+Hopefully we can merge back into the original bumpversion and carry on development there.
 
 # Description
 
