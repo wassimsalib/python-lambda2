@@ -599,9 +599,7 @@ def update_function(
     aws_session_token = cfg.get('aws_session_token')
 
     account_id = get_account_id(
-        profile_name, aws_access_key_id, aws_secret_access_key, region=cfg.get(
-            'region',aws_session_token=aws_session_token
-        ),
+        profile_name, aws_access_key_id, aws_secret_access_key, region=cfg.get('region'), aws_session_token=aws_session_token
     )
     role = get_role_name(
         cfg.get('region'), account_id,
