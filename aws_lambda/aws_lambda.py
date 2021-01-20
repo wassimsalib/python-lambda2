@@ -60,10 +60,11 @@ def cleanup_old_versions(
         profile_name = cfg.get('profile')
         aws_access_key_id = cfg.get('aws_access_key_id')
         aws_secret_access_key = cfg.get('aws_secret_access_key')
+        aws_session_token = cfg.get('aws_session_token')
 
         client = get_client(
             'lambda', profile_name, aws_access_key_id, aws_secret_access_key,
-            cfg.get('region'),
+            region=cfg.get('region'), aws_session_token=aws_session_token
         )
 
         response = client.list_versions_by_function(
@@ -465,19 +466,19 @@ def get_role_name(region, account_id, role):
 
 def get_account_id(
     profile_name, aws_access_key_id, aws_secret_access_key,
-    region=None,
+    region=None, aws_session_token=None
 ):
     """Query STS for a users' account_id"""
     client = get_client(
         'sts', profile_name, aws_access_key_id, aws_secret_access_key,
-        region,
+        region=region,aws_session_token=aws_session_token
     )
     return client.get_caller_identity().get('Account')
 
 
 def get_client(
     client, profile_name, aws_access_key_id, aws_secret_access_key,
-    region=None,
+    region=None, aws_session_token=None
 ):
     """Shortcut for getting an initialized instance of the boto3 client."""
 
@@ -485,7 +486,7 @@ def get_client(
         profile_name=profile_name,
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key,
-        region_name=region,
+        region_name=region, session_token=aws_session_token
     )
     return boto3.client(client)
 
@@ -498,11 +499,11 @@ def create_function(cfg, path_to_zip_file, use_s3=False, s3_file=None):
     profile_name = cfg.get('profile')
     aws_access_key_id = cfg.get('aws_access_key_id')
     aws_secret_access_key = cfg.get('aws_secret_access_key')
-
+    aws_session_token = cfg.get('aws_session_token')
     account_id = get_account_id(
-        profile_name, aws_access_key_id, aws_secret_access_key, cfg.get(
+        profile_name, aws_access_key_id, aws_secret_access_key, region=cfg.get(
             'region',
-        ),
+        ),aws_session_token=aws_session_token
     )
     role = get_role_name(
         cfg.get('region'), account_id,
@@ -511,7 +512,7 @@ def create_function(cfg, path_to_zip_file, use_s3=False, s3_file=None):
 
     client = get_client(
         'lambda', profile_name, aws_access_key_id, aws_secret_access_key,
-        cfg.get('region'),
+        region=cfg.get('region'),aws_secret_access_key=aws_session_token
     )
 
     # Do we prefer development variable over config?
@@ -595,10 +596,11 @@ def update_function(
     profile_name = cfg.get('profile')
     aws_access_key_id = cfg.get('aws_access_key_id')
     aws_secret_access_key = cfg.get('aws_secret_access_key')
+    aws_session_token = cfg.get('aws_session_token')
 
     account_id = get_account_id(
-        profile_name, aws_access_key_id, aws_secret_access_key, cfg.get(
-            'region',
+        profile_name, aws_access_key_id, aws_secret_access_key, region=cfg.get(
+            'region',aws_session_token=aws_session_token
         ),
     )
     role = get_role_name(
@@ -608,7 +610,7 @@ def update_function(
 
     client = get_client(
         'lambda', profile_name, aws_access_key_id, aws_secret_access_key,
-        cfg.get('region'),
+        region= cfg.get('region'),aws_session_token=aws_session_token
     )
 
     # Do we prefer development variable over config?
@@ -705,9 +707,10 @@ def upload_s3(cfg, path_to_zip_file, *use_s3):
     profile_name = cfg.get('profile')
     aws_access_key_id = cfg.get('aws_access_key_id')
     aws_secret_access_key = cfg.get('aws_secret_access_key')
+    aws_session_token = cfg.get('aws_session_token')
     client = get_client(
         's3', profile_name, aws_access_key_id, aws_secret_access_key,
-        cfg.get('region'),
+        region=cfg.get('region'), aws_session_token=aws_session_token
     )
     byte_stream = b''
     with open(path_to_zip_file, mode='rb') as fh:
@@ -745,9 +748,10 @@ def get_function_config(cfg):
     profile_name = cfg.get('profile')
     aws_access_key_id = cfg.get('aws_access_key_id')
     aws_secret_access_key = cfg.get('aws_secret_access_key')
+    aws_session_token = cfg.get('aws_session_token')
     client = get_client(
         'lambda', profile_name, aws_access_key_id, aws_secret_access_key,
-        cfg.get('region'),
+        region=cfg.get('region'), aws_session_token=aws_session_token
     )
 
     try:
