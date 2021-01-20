@@ -486,7 +486,7 @@ def get_client(
         profile_name=profile_name,
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key,
-        region_name=region, session_token=aws_session_token
+        region_name=region, aws_session_token=aws_session_token
     )
     return boto3.client(client)
 
