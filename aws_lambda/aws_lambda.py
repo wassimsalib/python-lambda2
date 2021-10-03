@@ -27,7 +27,6 @@ from .helpers import read
 from .helpers import timestamp
 from .helpers import LambdaContext
 
-
 ARN_PREFIXES = {
     'cn-north-1': 'aws-cn',
     'cn-northwest-1': 'aws-cn',
@@ -88,9 +87,9 @@ def cleanup_old_versions(
 
 
 def deploy(
-        src, requirements=None, local_package=None,
-        config_file='config.yaml', profile_name=None,
-        preserve_vpc=False, preserve_variables=False
+    src, requirements=None, local_package=None,
+    config_file='config.yaml', profile_name=None,
+    preserve_vpc=False, preserve_variables=False
 ):
     """Deploys a new function to AWS Lambda.
 
@@ -117,7 +116,8 @@ def deploy(
 
     existing_config = get_function_config(cfg)
     if existing_config:
-        update_function(cfg, path_to_zip_file, existing_config, preserve_vpc=preserve_vpc, preserve_variables=preserve_variables)
+        update_function(cfg, path_to_zip_file, existing_config, preserve_vpc=preserve_vpc,
+                        preserve_variables=preserve_variables)
     else:
         create_function(cfg, path_to_zip_file)
 
@@ -160,8 +160,8 @@ def deploy_s3(
 
 
 def upload(
-        src, requirements=None, local_package=None,
-        config_file='config.yaml', profile_name=None,
+    src, requirements=None, local_package=None,
+    config_file='config.yaml', profile_name=None,
 ):
     """Uploads a new function to AWS S3.
 
@@ -235,7 +235,7 @@ def invoke(
 
     timeout = cfg.get('timeout')
     if timeout:
-        context = LambdaContext(cfg.get('function_name'),timeout)
+        context = LambdaContext(cfg.get('function_name'), timeout)
     else:
         context = LambdaContext(cfg.get('function_name'))
 
@@ -409,17 +409,20 @@ def _install_packages(path, packages):
     :param list packages:
         A list of packages to be installed via pip.
     """
+
     def _filter_blacklist(package):
         blacklist = ['-i', '#', 'Python==', 'python-lambda==']
         return all(package.startswith(entry) is False for entry in blacklist)
+
     filtered_packages = filter(_filter_blacklist, packages)
     for package in filtered_packages:
         if package.startswith('-e '):
             package = package.replace('-e ', '')
 
         print('Installing {package}'.format(package=package))
-        subprocess.check_call([sys.executable, '-m', 'pip', 'install', package, '-t', path, '--ignore-installed'])
-    print ('Install directory contents are now: {directory}'.format(directory=os.listdir(path)))
+        subprocess.check_call(
+            [sys.executable, '-m', 'pip', 'install', package, '-t', path, '--ignore-installed'])
+    print('Install directory contents are now: {directory}'.format(directory=os.listdir(path)))
 
 
 def pip_install_to_target(path, requirements=None, local_package=None):
@@ -471,7 +474,7 @@ def get_account_id(
     """Query STS for a users' account_id"""
     client = get_client(
         'sts', profile_name, aws_access_key_id, aws_secret_access_key,
-        region=region,aws_session_token=aws_session_token
+        region=region, aws_session_token=aws_session_token
     )
     return client.get_caller_identity().get('Account')
 
@@ -503,7 +506,7 @@ def create_function(cfg, path_to_zip_file, use_s3=False, s3_file=None):
     account_id = get_account_id(
         profile_name, aws_access_key_id, aws_secret_access_key, region=cfg.get(
             'region',
-        ),aws_session_token=aws_session_token
+        ), aws_session_token=aws_session_token
     )
     role = get_role_name(
         cfg.get('region'), account_id,
@@ -512,7 +515,7 @@ def create_function(cfg, path_to_zip_file, use_s3=False, s3_file=None):
 
     client = get_client(
         'lambda', profile_name, aws_access_key_id, aws_secret_access_key,
-        region=cfg.get('region'),aws_secret_access_key=aws_session_token
+        region=cfg.get('region'), aws_session_token=aws_session_token
     )
 
     # Do we prefer development variable over config?
@@ -583,11 +586,13 @@ def create_function(cfg, path_to_zip_file, use_s3=False, s3_file=None):
 
     concurrency = get_concurrency(cfg)
     if concurrency > 0:
-        client.put_function_concurrency(FunctionName=func_name, ReservedConcurrentExecutions=concurrency)
+        client.put_function_concurrency(FunctionName=func_name,
+                                        ReservedConcurrentExecutions=concurrency)
 
 
 def update_function(
-        cfg, path_to_zip_file, existing_cfg, use_s3=False, s3_file=None, preserve_vpc=False, preserve_variables=False
+    cfg, path_to_zip_file, existing_cfg, use_s3=False, s3_file=None, preserve_vpc=False,
+    preserve_variables=False
 ):
     """Updates the code of an existing Lambda function"""
 
@@ -599,7 +604,8 @@ def update_function(
     aws_session_token = cfg.get('aws_session_token')
 
     account_id = get_account_id(
-        profile_name, aws_access_key_id, aws_secret_access_key, region=cfg.get('region'), aws_session_token=aws_session_token
+        profile_name, aws_access_key_id, aws_secret_access_key, region=cfg.get('region'),
+        aws_session_token=aws_session_token
     )
     role = get_role_name(
         cfg.get('region'), account_id,
@@ -608,7 +614,7 @@ def update_function(
 
     client = get_client(
         'lambda', profile_name, aws_access_key_id, aws_secret_access_key,
-        region= cfg.get('region'),aws_session_token=aws_session_token
+        region=cfg.get('region'), aws_session_token=aws_session_token
     )
 
     # Do we prefer development variable over config?
@@ -682,7 +688,8 @@ def update_function(
 
     concurrency = get_concurrency(cfg)
     if concurrency > 0:
-        client.put_function_concurrency(FunctionName=cfg.get('function_name'), ReservedConcurrentExecutions=concurrency)
+        client.put_function_concurrency(FunctionName=cfg.get('function_name'),
+                                        ReservedConcurrentExecutions=concurrency)
     elif 'Concurrency' in existing_cfg:
         client.delete_function_concurrency(FunctionName=cfg.get('function_name'))
 
